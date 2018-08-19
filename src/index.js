@@ -18,15 +18,19 @@ export default function({types: t}) {
     },
     JSXOpeningElement(path, state) {
       const attributes = path.container.openingElement.attributes;
-
       const newAttributes = [];
-
-      console.log('JSXOpeningElement', attributes);
 
       if (path.container && path.container.openingElement &&
         path.container.openingElement.name &&
         path.container.openingElement.name.name && state.file && state.file.opts && state.file.opts.basename) {
-        const stringLiteral = `${path.container.openingElement.name.name }-${ state.file.opts.basename}`;
+        let stringLiteral = `${path.container.openingElement.name.name }-${ state.file.opts.basename}`;
+
+        attributes.map((item) => {
+          if (item && item.name && item.name.name && item.name.name === 'className') {
+            stringLiteral = stringLiteral + item.value.value;
+          }
+        });
+
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(nodeNameAttr),
           t.stringLiteral(stringLiteral))
