@@ -1,9 +1,9 @@
 // @flow weak
 
 export default function({types: t}) {
-  const defaultPrefix = 'data-qa';
+  const defaultPrefix = 'data-test';
   let prefix;
-  let filenameAttr;
+  // let filenameAttr;
   let nodeNameAttr;
 
   const visitor = {
@@ -13,8 +13,8 @@ export default function({types: t}) {
       } else {
         prefix = defaultPrefix;
       }
-      filenameAttr = `${prefix}-file`;
-      nodeNameAttr = `${prefix}-node`;
+      // filenameAttr = `${prefix}-file`;
+      nodeNameAttr = `${prefix}-id`;
     },
     JSXOpeningElement(path, state) {
       const attributes = path.container.openingElement.attributes;
@@ -23,19 +23,20 @@ export default function({types: t}) {
 
       if (path.container && path.container.openingElement &&
         path.container.openingElement.name &&
-        path.container.openingElement.name.name) {
+        path.container.openingElement.name.name && state.file && state.file.opts && state.file.opts.basename) {
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(nodeNameAttr),
-          t.stringLiteral(path.container.openingElement.name.name))
+          t.stringLiteral(`${path.container.openingElement.name.name }-${ state.file.opts.basename}`))
         );
       }
-
+		/*
       if (state.file && state.file.opts && state.file.opts.basename) {
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(filenameAttr),
           t.stringLiteral(state.file.opts.basename))
         );
       }
+      */
 
       attributes.push(...newAttributes);
     },
