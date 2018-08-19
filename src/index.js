@@ -1,4 +1,5 @@
 // @flow weak
+const _ = require('lodash');
 
 export default function({types: t}) {
   const defaultPrefix = 'data-test';
@@ -30,6 +31,10 @@ export default function({types: t}) {
             stringLiteral = stringLiteral + item.value.value;
           }
         });
+
+        stringLiteral = _.kebabCase(stringLiteral);
+
+        console.log('stringLiteral: ', stringLiteral);
 
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(nodeNameAttr),
