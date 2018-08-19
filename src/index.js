@@ -21,22 +21,17 @@ export default function({types: t}) {
 
       const newAttributes = [];
 
+      console.log('JSXOpeningElement', attributes);
+
       if (path.container && path.container.openingElement &&
         path.container.openingElement.name &&
         path.container.openingElement.name.name && state.file && state.file.opts && state.file.opts.basename) {
+        const stringLiteral = `${path.container.openingElement.name.name }-${ state.file.opts.basename}`;
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(nodeNameAttr),
-          t.stringLiteral(`${path.container.openingElement.name.name }-${ state.file.opts.basename}`))
+          t.stringLiteral(stringLiteral))
         );
       }
-		/*
-      if (state.file && state.file.opts && state.file.opts.basename) {
-        newAttributes.push(t.jSXAttribute(
-          t.jSXIdentifier(filenameAttr),
-          t.stringLiteral(state.file.opts.basename))
-        );
-      }
-      */
 
       attributes.push(...newAttributes);
     },
