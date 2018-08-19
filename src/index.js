@@ -34,8 +34,6 @@ export default function({types: t}) {
 
         stringLiteral = _.kebabCase(stringLiteral);
 
-        console.log('stringLiteral: ', stringLiteral);
-
         newAttributes.push(t.jSXAttribute(
           t.jSXIdentifier(nodeNameAttr),
           t.stringLiteral(stringLiteral))
